@@ -26,12 +26,12 @@ data "aws_iam_policy_document" "sfn_assume_role_policy_document_module" {
 }
 
 resource "aws_iam_role" "iam_for_sfn_module" {
-  name = "tf-${terraform.workspace}-iam_for_sfn_module"
+  name = "tf-${terraform.workspace}-${lower(replace(var.tag_environment,"/[^a-zA-Z0-9]/",""))}-iam_for_sfn_module"
   assume_role_policy = data.aws_iam_policy_document.sfn_assume_role_policy_document_module.json
 }
 
 resource "aws_sfn_state_machine" "sfn_state_machine" {
-  name     = "my-state-machine-module"
+  name     = "my-state-machine-${lower(replace(var.tag_environment,"/[^a-zA-Z0-9]/",""))}-module"
   role_arn = aws_iam_role.iam_for_sfn_module.arn
 
   definition = <<EOF
