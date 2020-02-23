@@ -8,7 +8,7 @@ output "environmant" {
     value = "${data.null_data_source.environment.outputs["environment"]}"
 }
 
-data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
+data "aws_iam_policy_document" "sfn_assume_role_policy_document_module" {
 
   statement {
     actions = [
@@ -25,14 +25,14 @@ data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
   }
 }
 
-resource "aws_iam_role" "iam_for_sfn" {
+resource "aws_iam_role" "iam_for_sfn_module" {
   name = "tf-${terraform.workspace}-iam_for_sfn"
-  assume_role_policy = data.aws_iam_policy_document.sfn_assume_role_policy_document.json
+  assume_role_policy = data.aws_iam_policy_document.sfn_assume_role_policy_document_module.json
 }
 
 resource "aws_sfn_state_machine" "sfn_state_machine" {
-  name     = "my-state-machine"
-  role_arn = aws_iam_role.iam_for_sfn.arn
+  name     = "my-state-machine-module"
+  role_arn = aws_iam_role.iam_for_sfn_module.arn
 
   definition = <<EOF
 {
