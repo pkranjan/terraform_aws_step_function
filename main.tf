@@ -29,7 +29,7 @@ resource "aws_iam_role" "iam_for_sfn_module" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "sts:Assumerole",
+      "Action": "sts:AssumeRole",
       "Principal": {
         "Service": "states.amazonaws.com"
       },
