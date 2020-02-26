@@ -31,7 +31,7 @@ resource "aws_iam_role" "iam_for_sfn_module" {
 }
 
 resource "aws_sfn_state_machine" "sfn_state_machine" {
-  name     = "my-state-machine-${lower(replace(var.tag_environment,"/[^a-zA-Z0-9]/",""))}-module"
+  name     = var.name
   role_arn = aws_iam_role.iam_for_sfn_module.arn
 
   definition = <<EOF
