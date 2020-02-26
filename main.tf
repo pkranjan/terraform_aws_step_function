@@ -24,8 +24,7 @@ resource "aws_iam_policy" "lambda_execution_policy" {
 
 resource "aws_iam_role" "iam_for_sfn_module" {
   name = var.name
-  assume_rolep_olicy = <<EOF
-
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
