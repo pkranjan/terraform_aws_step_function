@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "lambda_execution_policy" {
     sid = "EnableServiceInvocation"
     actions = ["lambda:InvokeFunction"]
     effect = "Allow"
-    resources = var.lambda.arns
+    resources = var.lambda_arns
   }
 }
 
