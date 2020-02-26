@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "sfn_assume_role_policy_document_module" {
 }
 
 resource "aws_iam_role" "iam_for_sfn_module" {
-  name = "tf-${terraform.workspace}-${lower(replace(var.tag_environment,"/[^a-zA-Z0-9]/",""))}-iam_for_sfn_module"
+  name = var.name
   assume_role_policy = data.aws_iam_policy_document.sfn_assume_role_policy_document_module.json
 }
 
