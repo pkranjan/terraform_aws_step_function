@@ -8,7 +8,7 @@ variable "name" {
     description = "Step Function Name"
 }
 
-variable "lambda.arns" {
+variable "lambda_arns" {
     type = list(string)
     description = "List of Lambda ARNs"
 }
