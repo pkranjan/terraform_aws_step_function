@@ -8,26 +8,42 @@ output "environmant" {
     value = "${data.null_data_source.environment.outputs["environment"]}"
 }
 
-data "aws_iam_policy_document" "sfn_assume_role_policy_document_module" {
-
+data "aws_iam_policy_document" "lambda_execution_policy" {
   statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    principals {
-      type = "Service"
-      identifiers = [
-        "states.us-east-1.amazonaws.com",
-        "events.amazonaws.com"
-      ]
-    }
+    sid = "EnableServiceInvocation"
+    actions = ["lambda:InvokeFunction"]
+    effect = "Allow"
+    resources = var.lambda.arns
   }
+}
+
+resource "aws_iam_policy" "lambda_execution_policy" {
+    name = "lambda-execution-policy-${var.name}"
+    policy = join("", data.aws_iam_policy_document.lambda_execution_policy.*.json)
 }
 
 resource "aws_iam_role" "iam_for_sfn_module" {
   name = var.name
-  assume_role_policy = data.aws_iam_policy_document.sfn_assume_role_policy_document_module.json
+  assume_rolep_olicy = <<EOF
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:Assumerole",
+      "Principal": {
+        "Service": "states.amazonaws.com"
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "test_mandatory_sfn" {
+    role = aws_iam_role.iam_for_sfn_module.name
+    policy_arn = aws_iam_policy.lambda_execution_policy.arn
 }
 
 resource "aws_sfn_state_machine" "sfn_state_machine" {
